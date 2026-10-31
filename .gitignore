@@ -1,0 +1,10 @@
+# Ignorer absolument tout
+*
+# Sauf les fichiers README
+!README.md
+!README.fr.md
+!.gitignore
+
+# 3. Autoriser spécifiquement le dossier rapports et tout son contenu
+!rapports/
+!rapports/**
