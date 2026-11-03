@@ -2,16 +2,20 @@
 
 *Each month, before Statistics Canada’s release, a regression reads year-over-year CPI. It sees only what is already public.*
 
+**Description.** Pseudo-real-time nowcast of Canadian CPI. A ridge regression reads the IT Now indicator block through a publication calendar and is scored, on the eve of each release, against historical Statistics Canada prints.
+
+**Topics.** `nowcasting` `inflation` `cpi` `canada` `statistics-canada` `bank-of-canada` `pseudo-real-time` `ridge-regression` `macroeconomics`
+
 Year-over-year CPI is how much the basket costs relative to twelve months earlier. The Bank of Canada’s target is 2 percent, the midpoint of a 1 to 3 percent range. This page is a working reading. It is not a forecast from the Bank of Canada.
 
 The French article is `README.md`. The Word note is `rapports/Note_nowcast_IPC_Canada_0927.docx`.
 
 <!-- reading:start -->
-## The reading of 31 October 2026
+## The reading of 01 October 2026
 
-The open month is **2026-10**. Fitted on 114 published months, the regression reads **3.13%** year over year. The 80% band runs from **2.69%** to **3.58%**. The probability of exceeding 2% is **0.999**.
+The open month is **2026-09**. Fitted on 113 published months, the regression reads **2.88%** year over year. The 80% band runs from **2.43%** to **3.32%**. The probability of exceeding 2% is **0.994**.
 
-Bank of Canada text already inside the window does not move the number.
+Admissible text moves the reading by 0.042 points, to 2.92%.
 
 On the synthetic rehearsal, mean absolute error is 0.18 percentage points over 93 months. The Brier score on the probability of exceeding 2% is 0.078.
 
@@ -45,6 +49,20 @@ The same rule is replayed on a synthetic Canada, on the eve of each release. Mea
 ![Reading error](rapports/figures/errors.png)
 
 *Above zero, the eve’s reading was too high.*
+
+## The test on historical prints
+
+The synthetic rehearsal checks the calendar. The score that matters uses Statistics Canada prints. Each month the ridge is refit on the eve of the release, using only series already public, and then compared with the next morning’s print. The benchmark is last month’s year-over-year rate. For a twelve-month inflation rate that is the natural competitor, because inflation moves slowly. Its probability uses the scale of its own past errors, recomputed on that eve.
+
+The values are the latest vintage. The stylized calendar holds a month back until the hour treated as its first release. It does not rebuild the number as it was printed that morning. Retail volume, vector `v1446870181`, starts in February 2017, and the first complete model row is April 2017. With 60 months of training, required because the regressor list is about twenty series long, the first scored month is April 2022.
+
+From April 2022 to September 2026, 54 months, the ridge’s mean absolute error is 0.35 percentage points. Last month’s rate misses by 0.33. The mean gap in absolute error is +0.02 points. The Diebold-Mariano statistic, with 12 Newey-West lags for the overlap in a year-over-year rate, is 0.57, and the two-sided probability is 0.57. On 54 months that gap sits inside the noise.
+
+The split has an economic reading. In 2022–2023, 21 months while inflation was moving, the ridge misses by 0.42 points and last month’s rate by 0.45. From 2024, 33 months while inflation was gliding, last month’s rate misses by 0.26 and the ridge by 0.31. The ridge’s average bias is +0.10 points. The 80 percent band covers 72 percent of prints. The average in-sample residual scale is also 0.35 points: the average scale is right, and the shape of the errors is less so.
+
+A 36-month training window opens the score in April 2020, 78 months. Mean absolute error is then 0.45 for the ridge and 0.37 for last month’s rate (statistic 1.46, probability 0.14). The gap is in 2020–2021: 0.65 against 0.43. A short sample estimated through the pandemic break misses the turn.
+
+Month-by-month scores are in `rapports/pseudo_temps_reel.csv`. The scorecard is in `rapports/pseudo_temps_reel.txt`. Rebuild both with `python evaluate_history.py`.
 
 ## What this reading does not say
 

@@ -2,14 +2,18 @@
 
 *Chaque mois, avant le communiqué de Statistique Canada, une régression donne une lecture du glissement annuel de l'IPC. Elle ne voit que ce qui est déjà publié.*
 
+**Description.** Nowcast pseudo-temps réel de l'IPC canadien. Une régression ridge lit le bloc d'indicateurs d'IT Now à travers un calendrier de publication, et elle est notée, la veille de chaque chiffre, sur les impressions historiques de Statistique Canada.
+
+**Sujets.** `nowcasting` `inflation` `cpi` `canada` `statistics-canada` `bank-of-canada` `pseudo-real-time` `ridge-regression` `macroeconomics`
+
 Un glissement annuel dit de combien le panier de l'IPC coûte plus cher qu'il y a douze mois. La cible de la Banque du Canada est 2 %, au milieu d'une fourchette de 1 à 3 %. Cette page est une lecture de travail. Ce n'est pas une prévision de la Banque du Canada.
 
 <!-- lecture:debut -->
-## La lecture du 31 octobre 2026
+## La lecture du 1 octobre 2026
 
-Le mois encore ouvert est **octobre 2026**. La régression, estimée sur 114 mois déjà publiés, lit **3,13 %** de glissement annuel. La bande à 80 % va de **2,69 %** à **3,58 %**. La probabilité de dépasser 2 % est **0,999**.
+Le mois encore ouvert est **septembre 2026**. La régression, estimée sur 113 mois déjà publiés, lit **2,88 %** de glissement annuel. La bande à 80 % va de **2,43 %** à **3,32 %**. La probabilité de dépasser 2 % est **0,994**.
 
-Les textes de la Banque déjà dans la fenêtre ne déplacent pas ce chiffre.
+Les textes admissibles déplacent la lecture de 0,042 point, à 2,92 %.
 
 Sur la répétition fictive, l'erreur moyenne est de 0,18 point de glissement annuel, sur 93 mois. Le score de Brier, qui note la probabilité de dépasser 2 %, est de 0,078.
 
@@ -58,6 +62,20 @@ La même règle est rejouée sur un Canada fictif, la veille de chaque publicati
 ![Erreur de la lecture](rapports/figures/errors.png)
 
 *Au-dessus de zéro, la lecture de la veille était trop haute.*
+
+## L'épreuve sur les chiffres historiques
+
+La répétition fictive vérifie le calendrier. La note qui compte est calculée sur les impressions de Statistique Canada. Chaque mois, la ridge est réestimée la veille de la publication, avec les seules séries déjà publiques, puis comparée au chiffre du lendemain. Le repère est le glissement annuel du mois précédent : pour un IPC sur douze mois, c'est le concurrent naturel, parce que l'inflation bouge lentement. Sa probabilité utilise l'écart de ses propres erreurs passées, recalculé à chaque veille.
+
+Les valeurs sont celles du dernier millésime. Le calendrier stylisé retient un mois jusqu'à l'heure retenue pour sa première publication. Il ne reconstitue pas le chiffre tel qu'il était imprimé le matin même. Le volume des ventes, vecteur `v1446870181`, commence en février 2017, et la première ligne complète du modèle est avril 2017. Avec 60 mois d'apprentissage, exigés parce que le vecteur compte une vingtaine de régresseurs, le premier mois noté est avril 2022.
+
+D'avril 2022 à septembre 2026, soit 54 mois, l'erreur moyenne de la ridge est de 0,35 point. Celle du mois précédent est de 0,33 point. L'écart moyen d'erreur absolue est de +0,02 point. La statistique de Diebold-Mariano, avec 12 retards de Newey-West pour tenir compte du chevauchement du glissement annuel, vaut 0,57, et la probabilité bilatérale associée est 0,57. Sur 54 mois, cet écart reste dans le bruit.
+
+Le découpage a un sens économique. En 2022-2023, 21 mois où l'inflation se déplace, la ridge est à 0,42 point et le mois précédent à 0,45. À partir de 2024, 33 mois où l'inflation glisse, le mois précédent est à 0,26 point et la ridge à 0,31. Le biais moyen de la ridge est de +0,10 point. La bande à 80 % couvre 72 % des impressions. L'écart-type résiduel moyen, estimé dans l'échantillon, est aussi de 0,35 point : l'échelle moyenne est la bonne, la forme de l'erreur l'est moins.
+
+Une variante à 36 mois d'apprentissage ouvre la fenêtre dès avril 2020, soit 78 mois. L'erreur moyenne passe à 0,45 point pour la ridge et 0,37 pour le mois précédent (statistique 1,46, probabilité 0,14). Le trou est en 2020-2021 : 0,65 point contre 0,43. Un échantillon court, estimé au milieu de la rupture sanitaire, manque le virage.
+
+Le détail mois par mois est dans `rapports/pseudo_temps_reel.csv`. Le tableau de bord est dans `rapports/pseudo_temps_reel.txt`. On le refait avec `python evaluate_history.py`.
 
 ## Ce que cette lecture ne dit pas
 

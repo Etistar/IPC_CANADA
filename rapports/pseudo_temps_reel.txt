@@ -1,0 +1,32 @@
+Primary specification: 60 months of real-time training.
+
+Pseudo-real-time CPI nowcast on historical prints
+Scored months: 2022-04 to 2026-09 (54)
+MAE, ridge: 0.351 percentage points
+MAE, no change: 0.334 percentage points
+Bias, ridge (forecast minus print): 0.099
+80% band coverage: 0.722
+Brier, ridge, P(CPI > 2%): 0.105
+Brier, no change: 0.097
+Diebold-Mariano, |ridge| minus |no change|: mean 0.017, statistic 0.57, two-sided p 0.570
+2022-2023: n=21, ridge 0.424, no change 0.447
+from 2024: n=33, ridge 0.305, no change 0.262
+
+Mean in-sample residual scale: 0.351 percentage points
+
+Sensitivity: 36 months of real-time training.
+
+Pseudo-real-time CPI nowcast on historical prints
+Scored months: 2020-04 to 2026-09 (78)
+MAE, ridge: 0.448 percentage points
+MAE, no change: 0.370 percentage points
+Bias, ridge (forecast minus print): -0.035
+80% band coverage: 0.641
+Brier, ridge, P(CPI > 2%): 0.094
+Brier, no change: 0.081
+Diebold-Mariano, |ridge| minus |no change|: mean 0.078, statistic 1.46, two-sided p 0.144
+2020-2021: n=21, ridge 0.646, no change 0.427
+2022-2023: n=24, ridge 0.472, no change 0.469
+from 2024: n=33, ridge 0.305, no change 0.262
+
+Mean in-sample residual scale: 0.323 percentage points
